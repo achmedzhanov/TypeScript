@@ -348,11 +348,16 @@ namespace ts {
         return Debug.fail();
     }
 
-    export function contains<T>(array: ReadonlyArray<T> | undefined, value: T, equalityComparer: EqualityComparer<T> = equateValues): boolean {
+    export function contains<T>(array: ReadonlyArray<T> | undefined, value: T, equalityComparer?: EqualityComparer<T>): boolean {
         if (array) {
-            for (const v of array) {
-                if (equalityComparer(v, value)) {
-                    return true;
+            if (!equalityComparer) {
+                return array.indexOf(value) >= 0 ? true : false;
+            }
+            else {
+                for (const v of array) {
+                    if (equalityComparer(v, value)) {
+                        return true;
+                    }
                 }
             }
         }
